@@ -31,11 +31,16 @@ public_users.post("/register", (req,res) => {//register new user
 });
 
 // Get the book list available in the shop
-public_users.get('/',function (req, res) {
-    const get_books = new Promise((resolve, reject) => {
-        resolve(res.send(JSON.stringify(books, null, 4)));
-    });
-    get_books.then(() => console.log("Promise for getting books record resolved"));
+public_users.get('/', async function (req, res) {
+    try {
+        const get_books = await new Promise((resolve, reject) => {
+            resolve(JSON.stringify(books, null, 4));
+        });
+        res.send(get_books);
+    } catch (err) {
+        console.error(err);
+        res.send("Cannot retrieve data");
+    }
 });
 
 // Get book details based on ISBN
