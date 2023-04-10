@@ -55,7 +55,18 @@ regd_users.post("/login", (req,res) => {
 // Add a book review
 regd_users.put("/auth/review/:isbn", (req, res) => {
   //Write your code here
-    res.send(JSON.stringify(req.session.authorization["username"], null, 4));
+  const isbn = req.params.isbn;
+//   const user = req.session.authorization["username"];
+  const reviews = req.body.reviews;
+
+  if (typeof reviews === 'undefined' || reviews === '') {
+    res.send ("User didn't submit any reviews");
+  }
+  else {
+    books[isbn]["reviews"]=reviews;
+    res.send(books[isbn]);
+    // res.send(JSON.stringify(req.session.authorization["username"], null, 4));
+  }
 });
 
 module.exports.authenticated = regd_users;
