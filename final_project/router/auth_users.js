@@ -55,18 +55,36 @@ regd_users.post("/login", (req,res) => {
 // Add a book review
 regd_users.put("/auth/review/:isbn", (req, res) => {
   //Write your code here
-  const isbn = req.params.isbn;
-//   const user = req.session.authorization["username"];
-  const reviews = req.body.reviews;
+    const isbn = req.params.isbn;
+    const user = req.session.authorization["username"];
+    const review = req.body.review;
 
-  if (typeof reviews === 'undefined' || reviews === '') {
-    res.send ("User didn't submit any reviews");
-  }
-  else {
-    books[isbn]["reviews"]=reviews;
-    res.send(books[isbn]);
-    // res.send(JSON.stringify(req.session.authorization["username"], null, 4));
-  }
+    let filtered_book = books[isbn]
+    if (filtered_book) {
+        if(review) {
+            filtered_book['reviews'][user] = review;
+            books[isbn] = filtered_book;
+        }
+        res.send(`The review for the book with ISBN  ${isbn} has been added/updated.`);
+    }
+    else{
+        res.send("Unable to find this ISBN!");
+    }
+
+});
+
+//Delete user's book review
+regd_users.delete("/auth/review/:isbn", (req, res) => {
+    const isbn = req.params.isbn;
+    const user = req.session.authorization["username"];
+    let filtered_book = books[isbn]
+    if (filtered_book) {
+        delete filtered_book['reviews'][user];
+        res.send(`User ${user}'s review for the book with ISBN ${isbn} has been deleted.`);
+    }
+    else{
+        res.send("Unable to find this ISBN!");
+    }
 });
 
 module.exports.authenticated = regd_users;
