@@ -28,7 +28,7 @@ const authenticatedUser = (username,password)=>{ //returns boolean
 
 //only registered users can login
 regd_users.post("/login", (req,res) => {
-  //Write your code here
+//Write your code here
     const username = req.body.username;
     const password = req.body.password;
 
@@ -49,12 +49,11 @@ regd_users.post("/login", (req,res) => {
     else {
         return res.status(208).json({message: "Invalid Login. Check username and password"});
     }
-
 });
 
 // Add a book review
 regd_users.put("/auth/review/:isbn", (req, res) => {
-  //Write your code here
+//Write your code here
     const isbn = req.params.isbn;
     const user = req.session.authorization["username"];
     const review = req.body.review;
@@ -70,7 +69,6 @@ regd_users.put("/auth/review/:isbn", (req, res) => {
     else{
         res.send("Unable to find this ISBN!");
     }
-
 });
 
 //Delete user's book review
